@@ -11,11 +11,11 @@ export default function CreateAccount() {
         <h2 className='text-xl'>Fill out the form below to join Online Market!</h2>
       </div>
       <form className='flex flex-col gap-3'>
-        <FormInput type='text' placeholder='username' required errors={[]} />
-        <FormInput type='email' placeholder='email' required errors={[]} />
-        <FormInput type='password' placeholder='password' required errors={[]} />
-        <FormInput type='password' placeholder='confirm password' required errors={[]} />
-        <FormButton loading={false} text='Create Account' />
+        <FormInput name='username' type='text' placeholder='username' required errors={[]} />
+        <FormInput name='email' type='email' placeholder='email' required errors={[]} />
+        <FormInput name='password' type='password' placeholder='password' required errors={[]} />
+        <FormInput name='password' type='password' placeholder='confirm password' required errors={[]} />
+        <FormButton text='Create Account' />
       </form>
       <div className='w-full h-px bg-neutral-500' />
       <Link href='/sms' className='primary-btn flex h-10 items-center justify-center gap-2'>
