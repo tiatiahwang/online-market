@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  a {
+    @apply text-pink-300;
+  }
+}
+
+@layer components {
+  .container {
+    @apply flex flex-col gap-10 py-8 px-6;
+  }
+  .primary-btn {
+    @apply w-full bg-pink-300 text-white font-medium rounded-md text-center hover:bg-pink-400 transition-colors;
+  }
+}
