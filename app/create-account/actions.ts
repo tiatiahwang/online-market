@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from '@/lib/constants';
 import db from '@/lib/db';
 import { redirect } from 'next/navigation';
-import updateSession from '@/lib/session/updateSession';
+import loginSession from '@/lib/session/loginSession';
 
 const checkPasswords = ({ password, confirm_password }: { password: string; confirm_password: string }) =>
   password === confirm_password;
@@ -85,7 +85,7 @@ export const createAccount = async (prevState: any, formData: FormData) => {
       },
     });
 
-    await updateSession(user.id);
+    await loginSession(user.id);
     redirect('/profile');
   }
 };
