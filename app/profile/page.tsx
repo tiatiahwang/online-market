@@ -1,5 +1,5 @@
 import db from '@/lib/db';
-import getSession from '@/lib/session';
+import getSession from '@/lib/session/getSession';
 import { notFound, redirect } from 'next/navigation';
 
 async function getUser() {
@@ -28,6 +28,7 @@ export default async function Profile() {
     await session.destroy();
     redirect('/');
   };
+
   return (
     <div>
       <h1>Welcome! {user?.username}!</h1>

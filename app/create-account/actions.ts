@@ -1,14 +1,12 @@
 'use server';
 
 import bcrypt from 'bcrypt';
-import { cookies } from 'next/headers';
-import { getIronSession } from 'iron-session';
 import { z } from 'zod';
 
 import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from '@/lib/constants';
 import db from '@/lib/db';
 import { redirect } from 'next/navigation';
-import getSession from '@/lib/session';
+import updateSession from '@/lib/session/updateSession';
 
 const checkPasswords = ({ password, confirm_password }: { password: string; confirm_password: string }) =>
   password === confirm_password;
@@ -87,12 +85,7 @@ export const createAccount = async (prevState: any, formData: FormData) => {
       },
     });
 
-    const session = await getSession();
-
-    //@ts-ignore
-    session.id = user.id;
-    await session.save();
-
+    await updateSession(user.id);
     redirect('/profile');
   }
 };
