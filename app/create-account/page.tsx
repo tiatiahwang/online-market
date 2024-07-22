@@ -1,21 +1,49 @@
-import FormButton from '@/components/form-btn';
-import FormInput from '@/components/form-input';
+'use client';
+
+import Button from '@/components/button';
+import Input from '@/components/input';
 import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
+import { useFormState } from 'react-dom';
+import { createAccount } from './actions';
 
 export default function CreateAccount() {
+  const [state, action] = useFormState(createAccount, null);
+
   return (
     <div className='container'>
       <div className='flex flex-col gap-2 *:font-medium'>
         <h1 className='text-3xl'>Hello 😄</h1>
         <h2 className='text-xl'>Fill out the form below to join Online Market!</h2>
       </div>
-      <form className='flex flex-col gap-3'>
-        <FormInput name='username' type='text' placeholder='username' required errors={[]} />
-        <FormInput name='email' type='email' placeholder='email' required errors={[]} />
-        <FormInput name='password' type='password' placeholder='password' required errors={[]} />
-        <FormInput name='password' type='password' placeholder='confirm password' required errors={[]} />
-        <FormButton text='Create Account' />
+      <form action={action} className='flex flex-col gap-3'>
+        <Input
+          name='username'
+          type='text'
+          placeholder='username'
+          minLength={3}
+          maxLength={10}
+          required
+          errors={state?.fieldErrors.username}
+        />
+        <Input name='email' type='email' placeholder='email' required errors={state?.fieldErrors.email} />
+        <Input
+          name='password'
+          type='password'
+          placeholder='password'
+          minLength={4}
+          required
+          errors={state?.fieldErrors.password}
+        />
+        <Input
+          name='confirm_password'
+          type='password'
+          placeholder='confirm password'
+          minLength={4}
+          required
+          errors={state?.fieldErrors.confirm_password}
+        />
+        <Button text='Create Account' />
       </form>
       <div className='w-full h-px bg-neutral-500' />
       <Link href='/sms' className='primary-btn flex h-10 items-center justify-center gap-2'>
