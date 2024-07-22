@@ -8,15 +8,13 @@ import { logIn } from './actions';
 import { PASSWORD_MIN_LENGTH } from '@/lib/constants';
 
 export default function Login() {
-  const [state, action] = useFormState(logIn, {
-    potatio: 1,
-  } as any);
+  const [state, action] = useFormState(logIn, null);
 
   return (
     <div className='container'>
       <div className='flex flex-col gap-2 *:font-medium'>
         <h1 className='text-3xl'>Welcome!</h1>
-        <h2 className='text-xl'>Login in with email and passwrod.</h2>
+        <h2 className='text-xl'>Login in with email and password.</h2>
       </div>
       <form action={action} className='flex flex-col gap-3'>
         <Input name='email' type='email' placeholder='email' required errors={state?.fieldErrors.email} />
