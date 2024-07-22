@@ -6,6 +6,7 @@ import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
 import { createAccount } from './actions';
+import { PASSWORD_MIN_LENGTH } from '@/lib/constants';
 
 export default function CreateAccount() {
   const [state, action] = useFormState(createAccount, null);
@@ -31,7 +32,7 @@ export default function CreateAccount() {
           name='password'
           type='password'
           placeholder='password'
-          minLength={4}
+          minLength={PASSWORD_MIN_LENGTH}
           required
           errors={state?.fieldErrors.password}
         />
@@ -39,7 +40,7 @@ export default function CreateAccount() {
           name='confirm_password'
           type='password'
           placeholder='confirm password'
-          minLength={4}
+          minLength={PASSWORD_MIN_LENGTH}
           required
           errors={state?.fieldErrors.confirm_password}
         />
