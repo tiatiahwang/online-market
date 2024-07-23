@@ -15,7 +15,7 @@ export default async function getGithubProfile(token: string): Promise<IProfileR
   const githubProfile = await userProfileResponse.json();
 
   return {
-    id: githubProfile.id,
+    id: +githubProfile.id,
     username: githubProfile.login,
     avatar_url: githubProfile.avatar_url,
   };
