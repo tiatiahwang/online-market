@@ -5,7 +5,10 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Online Market',
+  title: {
+    template: '%s | UsedFul',
+    default: 'UsedFul',
+  },
   description: 'NextJS side project',
 };
 
@@ -16,7 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} bg-neutral-900 text-white max-w-screen-sm mx-auto`}>{children}</body>
+      <body className={`${inter.className} bg-neutral-900 text-white max-w-sm mx-auto w-[calc(100vh_-_3.5rem)]`}>
+        {children}
+      </body>
     </html>
   );
 }

@@ -2,11 +2,11 @@
 
 import Button from '@/components/button';
 import Input from '@/components/input';
-import SocialLogin from '@/components/social-login';
+import SocialLogin from '@/components/auth/social-login';
 import { useFormState } from 'react-dom';
 import { logIn } from './actions';
 import { PASSWORD_MIN_LENGTH } from '@/lib/constants';
-import SMSLogin from '@/components/sms-login';
+import SMSLogin from '@/components/auth/sms-login';
 
 export default function Login() {
   const [state, action] = useFormState(logIn, null);
