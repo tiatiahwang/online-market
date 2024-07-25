@@ -1,3 +1,4 @@
+import { formatCurrency, formatTime } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -17,8 +18,8 @@ export default function Product({ id, title, price, created_at, photo }: Product
       </div>
       <div className='flex flex-col gap-1 *:text-white'>
         <span className='text-lg'>{title}</span>
-        <span className='text-lg font-semibold'>${price}</span>
-        <span className='text-sm text-neutral-500'>{created_at.toString().slice(0, 10)}</span>
+        <span className='text-lg font-semibold'>${formatCurrency(price)}</span>
+        <span className='text-sm text-neutral-500'>{formatTime(created_at.toString())}</span>
       </div>
     </Link>
   );
