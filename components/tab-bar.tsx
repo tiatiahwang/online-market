@@ -8,7 +8,7 @@ export default function TabBar() {
   const pathname = usePathname();
 
   return (
-    <div className='fixed bottom-0 w-full mx-auto max-w-sm grid grid-cols-4 border-neutral-600 border-t px-5 py-3 bg-neutral-900 *:text-white'>
+    <div className='fixed bottom-0 w-full mx-auto max-w-sm grid grid-cols-4 border-neutral-600 border-t px-5 py-3 bg-neutral-800 *:text-white'>
       <Link href='/products' className='flex flex-col items-center gap-px'>
         {pathname === '/products' ? (
           <HomeFullIcon width='30' height='30' fill='#fff' stroke='none' />
