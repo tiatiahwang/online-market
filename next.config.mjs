@@ -13,6 +13,13 @@ const nextConfig = {
     });
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: 'avatars.githubusercontent.com',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

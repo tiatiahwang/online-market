@@ -18,8 +18,8 @@ export default function Product({ id, title, price, created_at, photo }: Product
       </div>
       <div className='flex flex-col gap-1 *:text-white'>
         <span className='text-lg'>{title}</span>
+        <span className='text-[12px] text-neutral-400'>{formatTime(created_at.toString())}</span>
         <span className='text-lg font-semibold'>${formatCurrency(price)}</span>
-        <span className='text-sm text-neutral-500'>{formatTime(created_at.toString())}</span>
       </div>
     </Link>
   );

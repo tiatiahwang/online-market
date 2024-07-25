@@ -52,10 +52,6 @@ export async function GET(request: NextRequest) {
 
     await loginSession(newUser.id);
     return redirect('/profile');
-  } else if (user.github_id === id + '') {
-    // In case of already existed github id, login
-    await loginSession(user.id);
-    return redirect('/profile');
   } else if (user.email === email && !user.github_id) {
     // In case of duplicated eamil but no github_id
     const updateUser = await db.user.update({
@@ -64,12 +60,17 @@ export async function GET(request: NextRequest) {
       },
       data: {
         github_id: id + '',
+        avatar: avatar_url,
       },
       select: {
         id: true,
       },
     });
+
     await loginSession(updateUser.id);
     return redirect('/profile');
   }
+
+  await loginSession(user.id);
+  return redirect('/profile');
 }

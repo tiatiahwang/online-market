@@ -1,7 +1,7 @@
+import { UserIcon } from '@/components/svg';
 import db from '@/lib/db';
 import getSession from '@/lib/session/getSession';
 import { formatCurrency } from '@/lib/utils';
-import { UserIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -50,15 +50,22 @@ export default async function ProductDetail({ params }: { params: { id: string }
         <Image fill src={product.photo} alt={product.title} />
       </div>
       <div className='p-5 flex justify-between items-center gap-3 border-b border-neutral-700'>
-        <div className='w-[80%] size-10 rounded-full flex'>
+        <div className='w-[80%] size-10 flex items-center space-x-2'>
           {product.user.avatar !== null ? (
-            <Image src={product.user.avatar} width={40} height={40} alt={product.user.username} />
+            <Image
+              src={product.user.avatar}
+              width={40}
+              height={40}
+              alt={product.user.username}
+              className='rounded-full'
+            />
           ) : (
-            <UserIcon className='w-[40px] h-[40px]' />
+            <UserIcon width='50' height='50' fill='none' stroke='#fff' />
           )}
           <div>{product.user.username}</div>
         </div>
         <div>
+          {/* TODO: Header로 이부분 나중에 빼기 */}
           {isOwner ? (
             <div className='cursor-pointer'>
               <svg
