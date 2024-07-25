@@ -6,6 +6,8 @@ import Chat from '@/public/svgs/chat.svg';
 import ChatFull from '@/public/svgs/chat-full.svg';
 import User from '@/public/svgs/user.svg';
 import UserFull from '@/public/svgs/user-full.svg';
+import Plus from '@/public/svgs/plus.svg';
+import Photo from '@/public/svgs/photo.svg';
 
 type SvgProps = {
   width: string;
@@ -44,4 +46,12 @@ export const UserIcon = ({ width, height, fill, stroke }: SvgProps) => {
 
 export const UserFullIcon = ({ width, height, fill, stroke }: SvgProps) => {
   return <UserFull width={width} height={height} fill={fill} stroke={stroke} />;
+};
+
+export const PlusIcon = ({ width, height, fill, stroke }: SvgProps) => {
+  return <Plus width={width} height={height} fill={fill} stroke={stroke} />;
+};
+
+export const PhotoIcon = ({ width, height, fill, stroke }: SvgProps) => {
+  return <Photo width={width} height={height} fill='none' stroke={stroke} />;
 };

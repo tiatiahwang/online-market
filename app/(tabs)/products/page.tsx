@@ -1,6 +1,8 @@
 import ProductList from '@/components/products/product-list';
+import { PlusIcon } from '@/components/svg';
 import db from '@/lib/db';
 import { Prisma } from '@prisma/client';
+import Link from 'next/link';
 
 async function getInitialProducts() {
   const products = await db.product.findMany({
@@ -26,8 +28,18 @@ export default async function Products() {
   const initialProducts = await getInitialProducts();
 
   return (
-    <div className='p-4 flex flex-col gap-4'>
+    <div className='w-full max-w-sm p-4 flex flex-col gap-4'>
       <ProductList initialProducts={initialProducts} />
+      <div className='flex justify-end pr-4'>
+        <div className='fixed bottom-24'>
+          <Link
+            href='/products/add'
+            className='bg-pink-300 flex items-center justify-center rounded-full size-16 text-white transition-colors hover:bg-pink-400'
+          >
+            <PlusIcon width='40' height='40' fill='#fff' />
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
