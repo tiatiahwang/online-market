@@ -34,9 +34,9 @@ export default async function Products() {
         <div className='fixed bottom-24'>
           <Link
             href='/products/add'
-            className='bg-pink-300 flex items-center justify-center rounded-full size-16 text-white transition-colors hover:bg-pink-400'
+            className='bg-primary-4 flex items-center justify-center rounded-full size-12 text-light-text dark:text-dark-text transition-colors hover:bg-pink-400'
           >
-            <PlusIcon width='40' height='40' fill='#fff' />
+            <PlusIcon width='30' height='30' fill='#ECECEC' />
           </Link>
         </div>
       </div>

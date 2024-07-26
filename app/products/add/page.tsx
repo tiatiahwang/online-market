@@ -21,6 +21,9 @@ export default function AddProduct() {
 
   return (
     <div>
+      <div className='z-10 fixed top-0 mx-auto max-w-sm w-full h-14 p-4 flex items-center justify-between bg-gray-100'>
+        HEADER
+      </div>
       <form action={uploadProduct} className='p-4 flex flex-col gap-4'>
         <label
           htmlFor='photo'

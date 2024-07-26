@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang='en'>
       <body
         suppressHydrationWarning={true}
-        className={`${inter.className} bg-neutral-900 text-white max-w-sm mx-auto w-[calc(100vh_-_3.5rem)]`}
+        className={`${inter.className} bg-light-bg text-light-text dark:bg-dark-bg dark:text-dark-text max-w-sm mx-auto w-[calc(100vh_-_3.5rem)]`}
       >
         {children}
       </body>

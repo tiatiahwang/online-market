@@ -16,7 +16,7 @@ export default function Product({ id, title, price, created_at, photo }: Product
       <div className='relative size-28 rounded-md overflow-hidden'>
         <Image fill src={photo} alt={title} className='object-voer' />
       </div>
-      <div className='flex flex-col gap-1 *:text-white'>
+      <div className='flex flex-col gap-1 *:text-light-text *:dark:text-dark-text'>
         <span className='text-lg'>{title}</span>
         <span className='text-[12px] text-neutral-400'>{formatTime(created_at.toString())}</span>
         <span className='text-lg font-semibold'>${formatCurrency(price)}</span>

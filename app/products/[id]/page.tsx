@@ -60,7 +60,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
               className='rounded-full'
             />
           ) : (
-            <UserIcon width='50' height='50' fill='none' stroke='#fff' />
+            <UserIcon width='50' height='50' fill='none' stroke='#ECECEC' />
           )}
           <div>{product.user.username}</div>
         </div>
@@ -90,9 +90,12 @@ export default async function ProductDetail({ params }: { params: { id: string }
         <h1 className='text-2xl font-semibold'>{product.title}</h1>
         <p>{product.description}</p>
       </div>
-      <div className='w-full max-w-sm mx-auto fixed bottom-0 p-5 pb-10 bg-neutral-800 flex justify-between items-center'>
+      <div className='w-full max-w-sm mx-auto fixed bottom-0 p-5 pb-10 border-t flex justify-between items-center'>
         <span className='font-semibold text-xl'>${formatCurrency(product.price)}</span>
-        <Link className='bg-orange-500 px-5 py-2.5 rounded-md text-white font-semibold' href={``}>
+        <Link
+          className='bg-primary-4 px-5 py-2.5 rounded-md text-light-text dark:text-dark-text font-semibold'
+          href={``}
+        >
           Chat
         </Link>
       </div>
