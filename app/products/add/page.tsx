@@ -2,7 +2,7 @@
 
 import Button from '@/components/button';
 import Input from '@/components/input';
-import { PhotoIcon } from '@/components/svg';
+import { PhotoIcon, XIcon } from '@/components/svg';
 import { useState } from 'react';
 import { uploadProduct } from './actions';
 
@@ -21,10 +21,16 @@ export default function AddProduct() {
 
   return (
     <div>
-      <div className='z-10 fixed top-0 mx-auto max-w-sm w-full h-14 p-4 flex items-center justify-between bg-gray-100'>
-        HEADER
+      <div className='z-10 fixed top-0 mx-auto max-w-sm w-full p-4 grid grid-cols-4  justify-between bg-dark-bg border-b'>
+        <div className='flex'>
+          <XIcon width='26' height='26' stroke='#ECECEC' />
+        </div>
+        <div className='col-span-2 text-center text-title-small font-semibold space-x-1'>
+          <span>Sell My Product</span>
+        </div>
+        <div />
       </div>
-      <form action={uploadProduct} className='p-4 flex flex-col gap-4'>
+      <form action={uploadProduct} className='px-4 pt-20 flex flex-col gap-4'>
         <label
           htmlFor='photo'
           className='border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 borde-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover'

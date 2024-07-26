@@ -8,6 +8,7 @@ import User from '@/public/svgs/user.svg';
 import UserFull from '@/public/svgs/user-full.svg';
 import Plus from '@/public/svgs/plus.svg';
 import Photo from '@/public/svgs/photo.svg';
+import XMark from '@/public/svgs/x-mark.svg';
 
 type SvgProps = {
   width: string;
@@ -16,42 +17,46 @@ type SvgProps = {
   stroke?: string;
 };
 
-export const HomeIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <Home width={width} height={height} fill={fill} stroke={stroke} />;
+export const HomeIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Home width={width} height={height} stroke={stroke} />;
 };
 
-export const HomeFullIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <HomeFull width={width} height={height} fill={fill} stroke={stroke} />;
+export const HomeFullIcon = ({ width, height, fill }: SvgProps) => {
+  return <HomeFull width={width} height={height} fill={fill} />;
 };
 
-export const LifeIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <Life width={width} height={height} fill={fill} stroke={stroke} />;
+export const LifeIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Life width={width} height={height} stroke={stroke} />;
 };
 
-export const LifeFullIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <LifeFull width={width} height={height} fill={fill} stroke={stroke} />;
+export const LifeFullIcon = ({ width, height, fill }: SvgProps) => {
+  return <LifeFull width={width} height={height} fill={fill} />;
 };
 
-export const ChatIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <Chat width={width} height={height} fill={fill} stroke={stroke} />;
+export const ChatIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Chat width={width} height={height} stroke={stroke} />;
 };
 
-export const ChatFullIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <ChatFull width={width} height={height} fill={fill} stroke={stroke} />;
+export const ChatFullIcon = ({ width, height, fill }: SvgProps) => {
+  return <ChatFull width={width} height={height} fill={fill} />;
 };
 
-export const UserIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <User width={width} height={height} fill={fill} stroke={stroke} />;
+export const UserIcon = ({ width, height, stroke }: SvgProps) => {
+  return <User width={width} height={height} stroke={stroke} />;
 };
 
-export const UserFullIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <UserFull width={width} height={height} fill={fill} stroke={stroke} />;
+export const UserFullIcon = ({ width, height, fill }: SvgProps) => {
+  return <UserFull width={width} height={height} fill={fill} />;
 };
 
-export const PlusIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <Plus width={width} height={height} fill={fill} stroke={stroke} />;
+export const PlusIcon = ({ width, height, fill }: SvgProps) => {
+  return <Plus width={width} height={height} fill={fill} />;
 };
 
-export const PhotoIcon = ({ width, height, fill, stroke }: SvgProps) => {
-  return <Photo width={width} height={height} fill='none' stroke={stroke} />;
+export const PhotoIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Photo width={width} height={height} stroke={stroke} />;
+};
+
+export const XIcon = ({ width, height, stroke }: SvgProps) => {
+  return <XMark width={width} height={height} stroke={stroke} />;
 };
