@@ -32,7 +32,7 @@ export default function Login() {
         </form>
         <SMSLogin />
       </div>
-      <div className='w-full h-px bg-dark-bg dark:bg-light-bg ' />
+      {/* <div className='w-full h-px bg-dark-bg dark:bg-light-bg ' /> */}
       <SocialLogin />
     </div>
   );

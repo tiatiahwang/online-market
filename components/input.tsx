@@ -10,7 +10,7 @@ export default function Input({ name, errors = [], ...rest }: InputProps & Input
     <div className='flex flex-col gap-2'>
       <input
         name={name}
-        className='bg-transparent rounded-md w-full h-10 focus:outline-none ring-1 focus:ring-2 ring-neutral-200 focus:ring-pink-300 border-none px-4 placeholder:text-neutral-400'
+        className='bg-transparent rounded-md w-full h-10 focus:outline-none ring-1 focus:ring-2 ring-primary-2 focus:ring-primary-3 border-none px-4 text-light-text'
         {...rest}
       />
       {errors.map((error, index) => (
