@@ -5,22 +5,65 @@ import Input from '@/components/input';
 import { PhotoIcon, XIcon } from '@/components/svg';
 import { useState } from 'react';
 import { uploadProduct } from './actions';
+import Image from 'next/image';
 
 export default function AddProduct() {
-  const [preview, setPreview] = useState('');
+  const [images, setImages] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
 
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files: FileList | null = event.target.files;
 
-    if (!files) return;
+    if (!files) {
+      throw new Error('알 수 없는 에러가 발생하였습니다.');
+    }
 
-    const file = files[0];
-    const url = URL.createObjectURL(file);
-    setPreview(url);
+    const newPreviews = [...previews];
+
+    if (newPreviews.length === 0) {
+      setImages(Array.from(files));
+
+      for (let i = 0; i < 5; i++) {
+        const reader = new FileReader();
+
+        reader.onloadend = (e) => {
+          newPreviews.push(e.target!.result as string);
+          setPreviews(newPreviews);
+        };
+        if (files[i]) {
+          reader.readAsDataURL(files[i]);
+        }
+      }
+    } else if (newPreviews.length < 5) {
+      const addedFiles = Array.from(files);
+      setImages((prev) => [...prev, ...addedFiles]);
+
+      for (let i = 0; i < 5 - newPreviews.length; i++) {
+        const reader = new FileReader();
+
+        reader.onloadend = (e) => {
+          newPreviews.push(e.target!.result as string);
+          setPreviews(newPreviews);
+        };
+        if (files[i]) {
+          reader.readAsDataURL(files[i]);
+        }
+      }
+    }
+  };
+
+  const handlePreviews = (index: number) => {
+    const newImages = [...images];
+    const newPreviews = [...previews];
+    newImages.splice(index, 1);
+    newPreviews.splice(index, 1);
+    setImages(newImages);
+    setPreviews(newPreviews);
   };
 
   return (
     <div>
+      {/* Header */}
       <div className='z-10 fixed top-0 mx-auto max-w-sm w-full p-4 grid grid-cols-4  justify-between bg-dark-bg border-b'>
         <div className='flex'>
           <XIcon width='26' height='26' stroke='#ECECEC' />
@@ -30,26 +73,52 @@ export default function AddProduct() {
         </div>
         <div />
       </div>
-      <form action={uploadProduct} className='px-4 pt-20 flex flex-col gap-4'>
-        <label
-          htmlFor='photo'
-          className='border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 borde-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover'
-          style={{
-            backgroundImage: `url(${preview})`,
-          }}
-        >
-          {preview === '' ? (
-            <>
-              <PhotoIcon width='40' height='40' stroke='#FFF' />
-              <div className='text-neutral-400 text-sm'>Add photo</div>
-            </>
-          ) : null}
-        </label>
-        <input onChange={onImageChange} type='file' id='photo' name='photo' accept='image/*' className='hidden' />
-        <Input name='title' required placeholder='title' type='text' />
-        <Input name='price' type='number' required placeholder='price' />
-        <Input name='description' type='text' required placeholder='description' />
-        <Button text='Done' />
+      <form action={uploadProduct} className='pt-20 flex flex-col gap-4 '>
+        {/* Image Upload */}
+        <div className='flex space-x-2 px-4'>
+          <label htmlFor='images'>
+            <input type='file' id='images' onChange={handleFileChange} multiple accept='img/*' className='hidden' />
+            <div className='size-[70px] space-y-0.5 bg-gray-90 flex flex-col items-center justify-center rounded-md cursor-pointer border border-dark-text-2'>
+              <PhotoIcon width='30' height='30' stroke='#ACACAC' />
+              <span className='text-sm text-dark-text-2 font-medium'>
+                <span className={`${previews.length > 0 && 'font-semibold text-primary-3'}`}>{previews.length}</span>
+                /5
+              </span>
+            </div>
+          </label>
+          {previews.length > 0 && (
+            <div className='flex overflow-x-scroll space-x-2 w-full max-w-sm'>
+              {previews.map((src, index) => (
+                <div key={index} className='relative min-h-[70px] min-w-[70px]'>
+                  <Image
+                    width={70}
+                    height={70}
+                    src={src}
+                    alt={`${src}-${index}`}
+                    style={{
+                      borderRadius: '6px',
+                      objectFit: 'cover',
+                      minHeight: '70px',
+                      minWidth: '70px',
+                    }}
+                  />
+                  <div
+                    className='absolute -right-1 top-0 cursor-pointer size-4 flex items-center justify-center rounded-full bg-dark-text'
+                    onClick={() => handlePreviews(index)}
+                  >
+                    <XIcon width='14' height='14' stroke='#212529' />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className='px-4 space-y-4'>
+          <Input name='title' required placeholder='title' type='text' />
+          <Input name='price' type='number' required placeholder='price' />
+          <Input name='description' type='text' required placeholder='description' />
+          <Button text='Done' />
+        </div>
       </form>
     </div>
   );
