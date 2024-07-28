@@ -33,6 +33,7 @@ const config: Config = {
         },
       },
       skeleton: '#404040',
+      placeholder: '#B1B6B9',
     },
   },
   plugins: [],

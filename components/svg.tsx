@@ -9,6 +9,7 @@ import UserFull from '@/public/svgs/user-full.svg';
 import Plus from '@/public/svgs/plus.svg';
 import Photo from '@/public/svgs/photo.svg';
 import XMark from '@/public/svgs/x-mark.svg';
+import ArrowRight from '@/public/svgs/arrow-right.svg';
 
 type SvgProps = {
   width: string;
@@ -59,4 +60,8 @@ export const PhotoIcon = ({ width, height, stroke }: SvgProps) => {
 
 export const XIcon = ({ width, height, stroke }: SvgProps) => {
   return <XMark width={width} height={height} stroke={stroke} />;
+};
+
+export const ArrowRightIcon = ({ width, height, stroke }: SvgProps) => {
+  return <ArrowRight width={width} height={height} stroke={stroke} />;
 };

@@ -2,7 +2,7 @@
 
 import Button from '@/components/button';
 import Input from '@/components/input';
-import { PhotoIcon, XIcon } from '@/components/svg';
+import { ArrowRightIcon, PhotoIcon, XIcon } from '@/components/svg';
 import { useState } from 'react';
 import { uploadProduct } from './actions';
 import Image from 'next/image';
@@ -73,9 +73,9 @@ export default function AddProduct() {
         </div>
         <div />
       </div>
-      <form action={uploadProduct} className='pt-20 flex flex-col gap-4 '>
+      <form action={uploadProduct} className='pt-20 flex flex-col gap-8'>
         {/* Image Upload */}
-        <div className='flex space-x-2 px-4'>
+        <div className='flex space-x-4 px-4'>
           <label htmlFor='images'>
             <input type='file' id='images' onChange={handleFileChange} multiple accept='img/*' className='hidden' />
             <div className='size-[70px] space-y-0.5 bg-gray-90 flex flex-col items-center justify-center rounded-md cursor-pointer border border-dark-text-2'>
@@ -87,7 +87,7 @@ export default function AddProduct() {
             </div>
           </label>
           {previews.length > 0 && (
-            <div className='flex overflow-x-scroll space-x-2 w-full max-w-sm'>
+            <div className='flex overflow-x-scroll space-x-4 w-full max-w-sm'>
               {previews.map((src, index) => (
                 <div key={index} className='relative min-h-[70px] min-w-[70px]'>
                   <Image
@@ -113,10 +113,32 @@ export default function AddProduct() {
             </div>
           )}
         </div>
-        <div className='px-4 space-y-4'>
+        <div className='px-4 space-y-3'>
+          <label htmlFor='title' className='text-sm font-semibold'>
+            Title
+          </label>
           <Input name='title' required placeholder='title' type='text' />
+        </div>
+        <div className='px-4 space-y-3'>
+          <label htmlFor='price' className='text-sm font-semibold'>
+            Price
+          </label>
           <Input name='price' type='number' required placeholder='price' />
+        </div>
+        <div className='px-4 space-y-3'>
+          <label htmlFor='price' className='text-sm font-semibold'>
+            Description
+          </label>
           <Input name='description' type='text' required placeholder='description' />
+        </div>
+        <div className='px-4 space-y-3 cursor-pointer'>
+          <span className='text-sm font-semibold'>Desired Selling Location</span>
+          <div className='bg-transparent rounded-md w-full h-10 px-4 text-placeholder border border-dark-text-2 flex items-center justify-between'>
+            <span>add location</span>
+            <ArrowRightIcon width='20' height='20' stroke='#ECECEC' />
+          </div>
+        </div>
+        <div className='fixed bottom-10 w-full max-w-sm px-4'>
           <Button text='Done' />
         </div>
       </form>
