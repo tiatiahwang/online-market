@@ -26,6 +26,11 @@ async function getProduct(id: number) {
           avatar: true,
         },
       },
+      photo: {
+        select: {
+          url: true,
+        },
+      },
     },
   });
 
@@ -47,7 +52,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
   return (
     <div>
       <div className='relative aspect-square'>
-        <Image fill src={product.photo} alt={product.title} />
+        <Image fill src={`${product.photo[0].url}/public`} alt={product.title} />
       </div>
       <div className='p-5 flex justify-between items-center gap-3 border-b border-neutral-700'>
         <div className='w-[80%] size-10 flex items-center space-x-2'>

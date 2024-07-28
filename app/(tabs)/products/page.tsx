@@ -9,7 +9,11 @@ async function getInitialProducts() {
     select: {
       id: true,
       title: true,
-      photo: true,
+      photo: {
+        select: {
+          url: true,
+        },
+      },
       price: true,
       created_at: true,
     },

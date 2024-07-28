@@ -7,14 +7,16 @@ interface ProductProps {
   title: string;
   price: number;
   created_at: Date;
-  photo: string;
+  photo: {
+    url: string;
+  }[];
 }
 
 export default function Product({ id, title, price, created_at, photo }: ProductProps) {
   return (
     <Link href={`/products/${id}`} className='flex gap-4'>
       <div className='relative size-28 rounded-md overflow-hidden'>
-        <Image fill src={photo} alt={title} className='object-voer' />
+        <Image fill src={photo[0].url} alt={title} className='object-voer' />
       </div>
       <div className='flex flex-col gap-1 *:text-light-text *:dark:text-dark-text'>
         <span className='text-lg'>{title}</span>
