@@ -6,15 +6,28 @@ import { ArrowRightIcon, PhotoIcon, XIcon } from '@/components/svg';
 import { useState } from 'react';
 import { getPhotoUrl, uploadProduct } from './actions';
 import Image from 'next/image';
-import { useFormState } from 'react-dom';
+import { useForm } from 'react-hook-form';
+import { productSchema, ProductType } from './schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const TODAY = new Date().toJSON();
 
 export default function AddProduct() {
+  const [files, setFiles] = useState<FileList | null>(null);
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploadUrls, setUploadUrls] = useState<string[]>([]);
   const [uploadPhotoIds, setUploadPhotoIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<ProductType>({
+    resolver: zodResolver(productSchema),
+  });
 
   const handleUrl = async () => {
     const { success, result } = await getPhotoUrl();
@@ -29,6 +42,8 @@ export default function AddProduct() {
     if (!files) {
       throw new Error('알 수 없는 에러가 발생하였습니다.');
     }
+    console.log('first', files);
+    setFiles(files);
 
     const newPreviews = [...previews];
     const newUploadUrls = [...uploadUrls];
@@ -52,6 +67,7 @@ export default function AddProduct() {
         }
         setUploadUrls(newUploadUrls);
         setUploadPhotoIds(newUploadIds);
+        setValue('photos', newUploadUrls);
       }
     } else if (newPreviews.length < 5) {
       for (let i = 0; i < 5 - newPreviews.length; i++) {
@@ -71,6 +87,7 @@ export default function AddProduct() {
         }
         setUploadUrls(newUploadUrls);
         setUploadPhotoIds(newUploadIds);
+        setValue('photos', newUploadUrls);
       }
     }
   };
@@ -87,17 +104,15 @@ export default function AddProduct() {
     setUploadPhotoIds(newUploadIds);
   };
 
-  const interceptAction = async (_: any, formData: FormData) => {
-    const photos = formData.getAll('photo');
-    console.log(photos);
-    if (!photos) {
+  const onSubmit = handleSubmit(async (data: ProductType) => {
+    if (!files) {
       throw new Error('알 수 없는 에러가 발생하였습니다.');
     }
 
     let urls = [];
-    for (let i = 0; i < photos.length; i++) {
+    for (let i = 0; i < files.length; i++) {
       const cloudflareForm = new FormData();
-      cloudflareForm.append('file', photos[i] as File, `${TODAY}-${uploadPhotoIds[i]}`);
+      cloudflareForm.append('file', files[i] as File, `${TODAY}-${uploadPhotoIds[i]}`);
 
       const response = await fetch(uploadUrls[i], {
         method: 'post',
@@ -111,14 +126,28 @@ export default function AddProduct() {
       const photoUrl = `https://imagedelivery.net/AjL7FiUUKL0mNbF_IibCSA/${uploadPhotoIds[i]}`;
       urls.push(photoUrl);
     }
-    console.log(urls);
+
+    const formData = new FormData();
+
+    formData.append('title', data.title);
+    formData.append('price', data.price + '');
+    formData.append('description', data.description);
+
     for (const url of urls) {
-      formData.append('photo_url', url);
+      formData.append('photos', url);
     }
-    return uploadProduct(_, formData);
+
+    const errors = await uploadProduct(formData);
+
+    if (errors) {
+      // setError('')
+    }
+  });
+
+  const onValid = async () => {
+    await onSubmit();
   };
 
-  const [state, action] = useFormState(interceptAction, null);
   return (
     <div>
       {/* Header */}
@@ -131,73 +160,96 @@ export default function AddProduct() {
         </div>
         <div />
       </div>
-      <form action={action} className='pt-20 flex flex-col gap-8'>
+      <form action={onValid} className='pt-20 flex flex-col gap-8'>
         {/* Image Upload */}
-        <div className='flex space-x-4 px-4'>
-          <label htmlFor='photo'>
-            <input
-              type='file'
-              id='photo'
-              name='photo'
-              onChange={handleFileChange}
-              multiple
-              accept='img/*'
-              className='hidden'
-            />
-            <div className='size-[70px] space-y-0.5 bg-gray-90 flex flex-col items-center justify-center rounded-md cursor-pointer border border-dark-text-2'>
-              <PhotoIcon width='30' height='30' stroke='#ACACAC' />
-              <span className='text-sm text-dark-text-2 font-medium'>
-                <span className={`${previews.length > 0 && 'font-semibold text-primary-3'}`}>{previews.length}</span>
-                /5
-              </span>
-            </div>
-          </label>
-          {/* TODO: need to add loading spinner */}
-          {isLoading && 'Loading'}
-          {!isLoading && previews.length > 0 && (
-            <div className='flex overflow-x-scroll space-x-4 w-full max-w-sm'>
-              {previews.map((src, index) => (
-                <div key={index} className='relative min-h-[70px] min-w-[70px]'>
-                  <Image
-                    width={70}
-                    height={70}
-                    src={src}
-                    alt={`${src}-${index}`}
-                    style={{
-                      borderRadius: '6px',
-                      objectFit: 'cover',
-                      minHeight: '70px',
-                      minWidth: '70px',
-                    }}
-                  />
-                  <div
-                    className='absolute -right-1 top-0 cursor-pointer size-4 flex items-center justify-center rounded-full bg-dark-text'
-                    onClick={() => handlePreviews(index)}
-                  >
-                    <XIcon width='14' height='14' stroke='#212529' />
+        <div className='flex flex-col px-4'>
+          <div className='flex space-x-4'>
+            <label htmlFor='photos'>
+              <input
+                type='file'
+                id='photos'
+                name='photos'
+                onChange={handleFileChange}
+                multiple
+                accept='img/*'
+                className='hidden'
+              />
+              <div className='size-[70px] space-y-0.5 bg-gray-90 flex flex-col items-center justify-center rounded-md cursor-pointer border border-dark-text-2'>
+                <PhotoIcon width='30' height='30' stroke='#ACACAC' />
+                <span className='text-sm text-dark-text-2 font-medium'>
+                  <span className={`${previews.length > 0 && 'font-semibold text-primary-3'}`}>{previews.length}</span>
+                  /5
+                </span>
+              </div>
+            </label>
+            {/* TODO: need to add loading spinner */}
+            {isLoading && 'Loading'}
+            {!isLoading && previews.length > 0 && (
+              <div className='flex overflow-x-scroll space-x-4 w-full max-w-sm'>
+                {previews.map((src, index) => (
+                  <div key={index} className='relative min-h-[70px] min-w-[70px] max-w-[70px] max-h-[70px]'>
+                    <Image
+                      width={70}
+                      height={70}
+                      src={src}
+                      alt={`${src}-${index}`}
+                      style={{
+                        borderRadius: '6px',
+                        objectFit: 'cover',
+                        minHeight: '70px',
+                        minWidth: '70px',
+                        maxHeight: '70px',
+                        maxWidth: '70px',
+                      }}
+                    />
+                    <div
+                      className='absolute -right-1 top-0 cursor-pointer size-4 flex items-center justify-center rounded-full bg-dark-text'
+                      onClick={() => handlePreviews(index)}
+                    >
+                      <XIcon width='14' height='14' stroke='#212529' />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
+          {errors.photos?.message && <div>{errors.photos.message}</div>}
         </div>
         <div className='px-4 space-y-3'>
           <label htmlFor='title' className='text-sm font-semibold'>
             Title
           </label>
-          <Input name='title' required placeholder='title' type='text' />
+          <Input
+            required
+            placeholder='title'
+            type='text'
+            errors={[errors.title?.message ?? '']}
+            {...register('title')}
+          />
         </div>
         <div className='px-4 space-y-3'>
           <label htmlFor='price' className='text-sm font-semibold'>
             Price
           </label>
-          <Input name='price' type='number' required placeholder='price' />
+          <Input
+            type='number'
+            required
+            placeholder='price'
+            errors={[errors.price?.message ?? '']}
+            {...register('price')}
+          />
         </div>
         <div className='px-4 space-y-3'>
           <label htmlFor='price' className='text-sm font-semibold'>
             Description
           </label>
-          <Input name='description' type='text' required placeholder='description' />
+          <Input
+            type='text'
+            required
+            placeholder='description'
+            errors={[errors.description?.message ?? '']}
+            {...register('description')}
+          />
         </div>
         <div className='px-4 space-y-3 cursor-pointer'>
           <span className='text-sm font-semibold'>Desired Selling Location</span>

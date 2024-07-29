@@ -3,35 +3,18 @@
 import db from '@/lib/db';
 import getSession from '@/lib/session/getSession';
 import { redirect } from 'next/navigation';
-import { z } from 'zod';
+import { productSchema } from './schema';
 
-const productSchema = z.object({
-  photo_url: z
-    .string({
-      required_error: 'Photo is required.',
-    })
-    .array(),
-  title: z.string({
-    required_error: 'Title is required.',
-  }),
-  description: z.string({
-    required_error: 'Description is required.',
-  }),
-  price: z.coerce.number({
-    required_error: 'Price is required.',
-  }),
-});
-
-export async function uploadProduct(_: any, formData: FormData) {
+export async function uploadProduct(formData: FormData) {
   const data = {
-    photo_url: formData.getAll('photo_url'),
+    photos: formData.getAll('photos'),
     title: formData.get('title'),
     price: formData.get('price'),
     description: formData.get('description'),
   };
-  console.log(data);
+
   const result = productSchema.safeParse(data);
-  console.log(result);
+
   if (!result.success) {
     return result.error.flatten();
   } else {
@@ -42,7 +25,7 @@ export async function uploadProduct(_: any, formData: FormData) {
     const product = await db.product.create({
       data: {
         title: result.data.title,
-        price: result.data.price,
+        price: +result.data.price,
         description: result.data.description,
         user: {
           connect: {
@@ -57,10 +40,10 @@ export async function uploadProduct(_: any, formData: FormData) {
 
     if (!product.id) return;
 
-    for (let i = 0; i < result.data.photo_url.length; i++) {
+    for (let i = 0; i < result.data.photos.length; i++) {
       await db.photo.create({
         data: {
-          url: result.data.photo_url[i],
+          url: result.data.photos[i],
           product: {
             connect: {
               id: product.id,
