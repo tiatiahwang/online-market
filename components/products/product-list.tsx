@@ -3,7 +3,7 @@
 import { InitialProducts } from '@/app/(tabs)/products/page';
 import { useEffect, useRef, useState } from 'react';
 import Product from './product';
-import { getMoreProducts } from '@/app/(tabs)/products/actions';
+import { getMoreProducts } from '@/app/(tabs)/home/actions';
 
 interface ProductListProps {
   initialProducts: InitialProducts;
@@ -16,7 +16,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
   const [isLastPage, setIsLastPage] = useState(false);
 
   const trigger = useRef<HTMLSpanElement>(null);
-  console.log(initialProducts);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       async (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
