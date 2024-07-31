@@ -10,6 +10,9 @@ import Plus from '@/public/svgs/plus.svg';
 import Photo from '@/public/svgs/photo.svg';
 import XMark from '@/public/svgs/x-mark.svg';
 import ArrowRight from '@/public/svgs/arrow-right.svg';
+import Ellipsis from '@/public/svgs/ellipsis.svg';
+import Edit from '@/public/svgs/edit.svg';
+import Delete from '@/public/svgs/delete.svg';
 
 type SvgProps = {
   width: string;
@@ -64,4 +67,16 @@ export const XIcon = ({ width, height, stroke }: SvgProps) => {
 
 export const ArrowRightIcon = ({ width, height, stroke }: SvgProps) => {
   return <ArrowRight width={width} height={height} stroke={stroke} />;
+};
+
+export const EllipsisIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Ellipsis width={width} height={height} stroke={stroke} />;
+};
+
+export const EditIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Edit width={width} height={height} stroke={stroke} />;
+};
+
+export const DeleteIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Delete width={width} height={height} stroke={stroke} />;
 };
