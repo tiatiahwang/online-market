@@ -7,7 +7,7 @@ import { productSchema } from './schema';
 
 export async function uploadProduct(formData: FormData) {
   const data = {
-    photos: formData.getAll('photos'),
+    photo: formData.getAll('photos'),
     title: formData.get('title'),
     price: formData.get('price'),
     description: formData.get('description'),
@@ -40,10 +40,10 @@ export async function uploadProduct(formData: FormData) {
 
     if (!product.id) return;
 
-    for (let i = 0; i < result.data.photos.length; i++) {
+    for (let i = 0; i < result.data.photo.length; i++) {
       await db.photo.create({
         data: {
-          url: result.data.photos[i],
+          url: result.data.photo[i],
           product: {
             connect: {
               id: product.id,

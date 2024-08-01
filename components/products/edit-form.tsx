@@ -1,23 +1,40 @@
 'use client';
 
-import Button from '@/components/button';
-import Input from '@/components/input';
-import { ArrowRightIcon, PhotoIcon, XIcon } from '@/components/svg';
-import { useState } from 'react';
-import { getPhotoUrl, uploadProduct } from './actions';
+import { productSchema, ProductType } from '@/app/products/add/schema';
+import { useEffect, useState } from 'react';
+import { ArrowRightIcon, PhotoIcon, XIcon } from '../svg';
+import Button from '../button';
+import Input from '../input';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
-import { productSchema, ProductType } from './schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getPhotoUrl } from '@/app/products/add/actions';
 
-const TODAY = new Date().toJSON();
+interface EditFormProps {
+  product: {
+    id: number;
+    title: string;
+    price: number;
+    description: string;
+    userId: number;
+    photo: {
+      id: number;
+      url: string;
+    }[];
+  };
+}
 
-export default function AddProduct() {
+export default function EditForm({ product }: EditFormProps) {
   const [files, setFiles] = useState<FileList | null>(null);
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploadUrls, setUploadUrls] = useState<string[]>([]);
   const [uploadPhotoIds, setUploadPhotoIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const urls = product.photo.map((item) => item.url);
+    setPreviews(urls);
+  }, []);
 
   const {
     register,
@@ -104,63 +121,18 @@ export default function AddProduct() {
     setUploadPhotoIds(newUploadIds);
   };
 
-  const onSubmit = handleSubmit(async (data: ProductType) => {
-    if (!files) {
-      throw new Error('알 수 없는 에러가 발생하였습니다.');
-    }
-
-    let urls = [];
-    for (let i = 0; i < files.length; i++) {
-      const cloudflareForm = new FormData();
-      cloudflareForm.append('file', files[i] as File, `${TODAY}-${uploadPhotoIds[i]}`);
-
-      const response = await fetch(uploadUrls[i], {
-        method: 'post',
-        body: cloudflareForm,
-      });
-
-      if (response.status !== 200) {
-        throw new Error('알 수 없는 에러가 발생하였습니다.');
-      }
-
-      const photoUrl = `https://imagedelivery.net/AjL7FiUUKL0mNbF_IibCSA/${uploadPhotoIds[i]}`;
-      urls.push(photoUrl);
-    }
-
-    const formData = new FormData();
-
-    formData.append('title', data.title);
-    formData.append('price', data.price + '');
-    formData.append('description', data.description);
-
-    for (const url of urls) {
-      formData.append('photo', url);
-    }
-
-    const errors = await uploadProduct(formData);
-
-    if (errors) {
-      // setError('')
-    }
-  });
-
-  const onValid = async () => {
-    await onSubmit();
-  };
-
   return (
     <div>
-      {/* Header */}
       <div className='z-10 fixed top-0 mx-auto max-w-sm w-full p-4 grid grid-cols-4  justify-between bg-dark-bg border-b'>
         <div className='flex'>
           <XIcon width='26' height='26' stroke='#ECECEC' />
         </div>
         <div className='col-span-2 text-center text-title-small font-semibold space-x-1'>
-          <span>Sell My Product</span>
+          <span>Edit Product</span>
         </div>
         <div />
       </div>
-      <form action={onValid} className='pt-20 flex flex-col gap-8'>
+      <form className='pt-20 flex flex-col gap-8'>
         {/* Image Upload */}
         <div className='flex flex-col px-4'>
           <div className='flex space-x-4'>
@@ -191,7 +163,7 @@ export default function AddProduct() {
                     <Image
                       width={70}
                       height={70}
-                      src={src}
+                      src={`${src}/avatar`}
                       alt={`${src}-${index}`}
                       style={{
                         borderRadius: '6px',
@@ -222,6 +194,7 @@ export default function AddProduct() {
           <Input
             required
             placeholder='title'
+            defaultValue={product.title}
             type='text'
             errors={[errors.title?.message ?? '']}
             {...register('title')}
@@ -235,6 +208,7 @@ export default function AddProduct() {
             type='number'
             required
             placeholder='price'
+            defaultValue={product.price}
             errors={[errors.price?.message ?? '']}
             {...register('price')}
           />
@@ -247,6 +221,7 @@ export default function AddProduct() {
             type='text'
             required
             placeholder='description'
+            defaultValue={product.description}
             errors={[errors.description?.message ?? '']}
             {...register('description')}
           />
@@ -259,7 +234,7 @@ export default function AddProduct() {
           </div>
         </div>
         <div className='fixed bottom-10 w-full max-w-sm px-4'>
-          <Button text='Done' />
+          <Button text='Edit' />
         </div>
       </form>
     </div>

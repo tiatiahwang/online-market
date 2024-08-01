@@ -59,7 +59,7 @@ async function getProductTitle(id: number) {
 }
 
 const getCachedProductTitle = nextCache(getProductTitle, ['product-title'], {
-  tags: ['product-title'],
+  tags: ['product-title', 'product-detail'],
 });
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -105,7 +105,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
           )}
           <div>{product.user.username}</div>
         </div>
-        <div>{isOwner ? <BottomDrawer /> : null}</div>
+        <div>{isOwner ? <BottomDrawer productId={String(product.id)} /> : null}</div>
       </div>
       <div className='p-5'>
         <h1 className='text-2xl font-semibold'>{product.title}</h1>
