@@ -13,6 +13,8 @@ import ArrowRight from '@/public/svgs/arrow-right.svg';
 import Ellipsis from '@/public/svgs/ellipsis.svg';
 import Edit from '@/public/svgs/edit.svg';
 import Delete from '@/public/svgs/delete.svg';
+import Like from '@/public/svgs/like.svg';
+import Comment from '@/public/svgs/comment.svg';
 
 type SvgProps = {
   width: string;
@@ -79,4 +81,12 @@ export const EditIcon = ({ width, height, stroke }: SvgProps) => {
 
 export const DeleteIcon = ({ width, height, stroke }: SvgProps) => {
   return <Delete width={width} height={height} stroke={stroke} />;
+};
+
+export const LikeIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Like width={width} height={height} stroke={stroke} />;
+};
+
+export const CommentIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Comment width={width} height={height} stroke={stroke} />;
 };
