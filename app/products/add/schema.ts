@@ -6,6 +6,7 @@ export const productSchema = z.object({
       required_error: 'Photo is required.',
     })
     .array(),
+  photo_id: z.string().array(),
   title: z.string({
     required_error: 'Title is required.',
   }),

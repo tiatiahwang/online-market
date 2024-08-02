@@ -3,7 +3,7 @@
 import Button from '@/components/button';
 import Input from '@/components/input';
 import { ArrowRightIcon, PhotoIcon, XIcon } from '@/components/svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getPhotoUrl, uploadProduct } from './actions';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
@@ -68,6 +68,7 @@ export default function AddProduct() {
         setUploadUrls(newUploadUrls);
         setUploadPhotoIds(newUploadIds);
         setValue('photo', newUploadUrls);
+        setValue('photo_id', newUploadIds);
       }
     } else if (newPreviews.length < 5) {
       for (let i = 0; i < 5 - newPreviews.length; i++) {
@@ -88,6 +89,7 @@ export default function AddProduct() {
         setUploadUrls(newUploadUrls);
         setUploadPhotoIds(newUploadIds);
         setValue('photo', newUploadUrls);
+        setValue('photo_id', newUploadIds);
       }
     }
   };
@@ -135,6 +137,10 @@ export default function AddProduct() {
 
     for (const url of urls) {
       formData.append('photo', url);
+    }
+
+    for (const url_id of uploadPhotoIds) {
+      formData.append('photo_id', url_id);
     }
 
     const errors = await uploadProduct(formData);

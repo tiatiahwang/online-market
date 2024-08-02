@@ -34,6 +34,7 @@ export default function EditForm({ product }: EditFormProps) {
   useEffect(() => {
     const urls = product.photo.map((item) => item.url);
     setPreviews(urls);
+    console.log(urls.map((url) => url.split('/')));
   }, []);
 
   const {
@@ -66,27 +67,7 @@ export default function EditForm({ product }: EditFormProps) {
     const newUploadUrls = [...uploadUrls];
     const newUploadIds = [...uploadPhotoIds];
 
-    if (newPreviews.length === 0) {
-      for (let i = 0; i < 5; i++) {
-        const reader = new FileReader();
-
-        reader.onloadend = async (e) => {
-          setIsLoading(true);
-          newPreviews.push(e.target!.result as string);
-          setPreviews(newPreviews);
-          const { id, uploadURL } = await handleUrl();
-          newUploadUrls.push(uploadURL);
-          newUploadIds.push(id);
-          setIsLoading(false);
-        };
-        if (files[i]) {
-          reader.readAsDataURL(files[i]);
-        }
-        setUploadUrls(newUploadUrls);
-        setUploadPhotoIds(newUploadIds);
-        setValue('photo', newUploadUrls);
-      }
-    } else if (newPreviews.length < 5) {
+    if (newPreviews.length < 5) {
       for (let i = 0; i < 5 - newPreviews.length; i++) {
         const reader = new FileReader();
 
@@ -113,6 +94,9 @@ export default function EditForm({ product }: EditFormProps) {
     const newPreviews = [...previews];
     const newUploadUrls = [...uploadUrls];
     const newUploadIds = [...uploadPhotoIds];
+    console.log(index);
+    console.log(newUploadIds);
+    console.log(uploadPhotoIds[index]);
     newPreviews.splice(index, 1);
     newUploadUrls.splice(index, 1);
     newUploadIds.splice(index, 1);
@@ -121,10 +105,22 @@ export default function EditForm({ product }: EditFormProps) {
     setUploadPhotoIds(newUploadIds);
   };
 
+  // useEffect(() => {
+  //   console.log(previews);
+  // }, [previews]);
+
+  const onSubmit = handleSubmit(async (data: ProductType) => {
+    console.log(previews);
+  });
+
+  const onValid = async () => {
+    await onSubmit();
+  };
+
   return (
     <div>
       <div className='z-10 fixed top-0 mx-auto max-w-sm w-full p-4 grid grid-cols-4  justify-between bg-dark-bg border-b'>
-        <div className='flex'>
+        <div className='flex cursor-pointer'>
           <XIcon width='26' height='26' stroke='#ECECEC' />
         </div>
         <div className='col-span-2 text-center text-title-small font-semibold space-x-1'>
@@ -132,7 +128,7 @@ export default function EditForm({ product }: EditFormProps) {
         </div>
         <div />
       </div>
-      <form className='pt-20 flex flex-col gap-8'>
+      <form action={onValid} className='pt-20 flex flex-col gap-8'>
         {/* Image Upload */}
         <div className='flex flex-col px-4'>
           <div className='flex space-x-4'>

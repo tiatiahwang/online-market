@@ -46,7 +46,7 @@ export default function CreateAccount() {
         <Button text='Create Account' />
       </form>
       <div className='w-full h-px bg-dark-bg dark:bg-light-bg ' />
-      <Link href='/sms' className='primary-btn flex h-10 items-center justify-center gap-2'>
+      <Link href='/sms' className='primary-btn flex h-10 items-center justify-center gap-2 text-primary-3'>
         <span>Login with SMS</span>
       </Link>
     </div>

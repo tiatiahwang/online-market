@@ -45,6 +45,7 @@ model Product {
 model Photo {
   id          Int       @id @default(autoincrement())
   url         String
-  product        Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cf_id       String    @unique
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   Int
 }

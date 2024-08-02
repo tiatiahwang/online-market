@@ -6,11 +6,6 @@
   display: none;
 }
 
-@layer base {
-  a {
-    @apply text-primary-3;
-  }
-}
 @layer components {
   .container {
     @apply flex flex-col gap-10 py-8 px-6;
