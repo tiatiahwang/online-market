@@ -15,6 +15,7 @@ import Edit from '@/public/svgs/edit.svg';
 import Delete from '@/public/svgs/delete.svg';
 import Like from '@/public/svgs/like.svg';
 import Comment from '@/public/svgs/comment.svg';
+import Eye from '@/public/svgs/eye.svg';
 
 type SvgProps = {
   width: string;
@@ -89,4 +90,8 @@ export const LikeIcon = ({ width, height, stroke }: SvgProps) => {
 
 export const CommentIcon = ({ width, height, stroke }: SvgProps) => {
   return <Comment width={width} height={height} stroke={stroke} />;
+};
+
+export const EyeIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Eye width={width} height={height} stroke={stroke} />;
 };
