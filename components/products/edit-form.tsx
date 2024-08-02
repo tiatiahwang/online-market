@@ -9,8 +9,10 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getPhotoUrl } from '@/app/products/add/actions';
+import { deletePhotoUrl, editProduct } from '@/app/products/[id]/edit/action';
 
 interface EditFormProps {
+  id: number;
   product: {
     id: number;
     title: string;
@@ -19,13 +21,14 @@ interface EditFormProps {
     userId: number;
     photo: {
       id: number;
+      cf_id: string;
       url: string;
     }[];
   };
 }
 
-export default function EditForm({ product }: EditFormProps) {
-  const [files, setFiles] = useState<FileList | null>(null);
+export default function EditForm({ id, product }: EditFormProps) {
+  const [files, setFiles] = useState<{ [x: string]: File }[] | null>(null);
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploadUrls, setUploadUrls] = useState<string[]>([]);
   const [uploadPhotoIds, setUploadPhotoIds] = useState<string[]>([]);
@@ -34,7 +37,6 @@ export default function EditForm({ product }: EditFormProps) {
   useEffect(() => {
     const urls = product.photo.map((item) => item.url);
     setPreviews(urls);
-    console.log(urls.map((url) => url.split('/')));
   }, []);
 
   const {
@@ -61,11 +63,15 @@ export default function EditForm({ product }: EditFormProps) {
       throw new Error('알 수 없는 에러가 발생하였습니다.');
     }
 
-    setFiles(files);
-
     const newPreviews = [...previews];
     const newUploadUrls = [...uploadUrls];
     const newUploadIds = [...uploadPhotoIds];
+
+    const sliced = Object.entries(files)
+      .slice(0, 5 - newPreviews.length)
+      .map((file) => ({ [file[0]]: file[1] }));
+
+    setFiles(sliced);
 
     if (newPreviews.length < 5) {
       for (let i = 0; i < 5 - newPreviews.length; i++) {
@@ -90,13 +96,16 @@ export default function EditForm({ product }: EditFormProps) {
     }
   };
 
-  const handlePreviews = (index: number) => {
+  const handlePreviews = async (index: number) => {
+    const photoId = previews[index].split('/')[4];
+    const response = await deletePhotoUrl(photoId);
+    if (response?.fieldErrors?.photo) {
+      setError('photo', { message: response?.fieldErrors?.photo[0] });
+      return;
+    }
     const newPreviews = [...previews];
     const newUploadUrls = [...uploadUrls];
     const newUploadIds = [...uploadPhotoIds];
-    console.log(index);
-    console.log(newUploadIds);
-    console.log(uploadPhotoIds[index]);
     newPreviews.splice(index, 1);
     newUploadUrls.splice(index, 1);
     newUploadIds.splice(index, 1);
@@ -105,12 +114,46 @@ export default function EditForm({ product }: EditFormProps) {
     setUploadPhotoIds(newUploadIds);
   };
 
-  // useEffect(() => {
-  //   console.log(previews);
-  // }, [previews]);
-
   const onSubmit = handleSubmit(async (data: ProductType) => {
-    console.log(previews);
+    console.log('submit!!');
+    if (!files) {
+      throw new Error('알 수 없는 에러가 발생하였습니다.');
+    }
+
+    let urls = [];
+    for (let i = 0; i < files.length; i++) {
+      const cloudflareForm = new FormData();
+      cloudflareForm.append('file', files[i][i], `${uploadPhotoIds[i]}`);
+
+      const response = await fetch(uploadUrls[i], {
+        method: 'POST',
+        body: cloudflareForm,
+      });
+
+      if (response.status !== 200) {
+        throw new Error('알 수 없는 에러가 발생하였습니다.');
+      }
+
+      const photoUrl = `https://imagedelivery.net/AjL7FiUUKL0mNbF_IibCSA/${uploadPhotoIds[i]}`;
+      urls.push(photoUrl);
+    }
+
+    const formData = new FormData();
+
+    formData.append('id', id + '');
+    formData.append('title', data.title);
+    formData.append('price', data.price + '');
+    formData.append('description', data.description);
+
+    for (const url of urls) {
+      formData.append('photo', url);
+    }
+
+    const errors = await editProduct(formData);
+
+    if (errors) {
+      // setError('')
+    }
   });
 
   const onValid = async () => {
@@ -159,7 +202,7 @@ export default function EditForm({ product }: EditFormProps) {
                     <Image
                       width={70}
                       height={70}
-                      src={`${src}/avatar`}
+                      src={src.includes('https') ? `${src}/avatar` : src}
                       alt={`${src}-${index}`}
                       style={{
                         borderRadius: '6px',

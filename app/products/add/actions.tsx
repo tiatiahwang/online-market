@@ -41,18 +41,20 @@ export async function uploadProduct(formData: FormData) {
 
     if (!product.id) return;
 
-    for (let i = 0; i < result.data.photo.length; i++) {
-      await db.photo.create({
-        data: {
-          url: result.data.photo[i],
-          cf_id: result.data.photo_id[i],
-          product: {
-            connect: {
-              id: product.id,
+    if (result.data.photo && result.data.photo_id) {
+      for (let i = 0; i < result.data.photo.length; i++) {
+        await db.photo.create({
+          data: {
+            url: result.data.photo[i],
+            cf_id: result.data.photo_id[i],
+            product: {
+              connect: {
+                id: product.id,
+              },
             },
           },
-        },
-      });
+        });
+      }
     }
 
     redirect(`/products/${product.id}`);

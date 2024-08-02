@@ -1,12 +1,14 @@
 import { z } from 'zod';
 
 export const productSchema = z.object({
+  id: z.coerce.number().optional(),
   photo: z
     .string({
       required_error: 'Photo is required.',
     })
-    .array(),
-  photo_id: z.string().array(),
+    .array()
+    .optional(),
+  photo_id: z.string().array().optional(),
   title: z.string({
     required_error: 'Title is required.',
   }),

@@ -3,7 +3,7 @@
 import Button from '@/components/button';
 import Input from '@/components/input';
 import { ArrowRightIcon, PhotoIcon, XIcon } from '@/components/svg';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getPhotoUrl, uploadProduct } from './actions';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
@@ -114,10 +114,10 @@ export default function AddProduct() {
     let urls = [];
     for (let i = 0; i < files.length; i++) {
       const cloudflareForm = new FormData();
-      cloudflareForm.append('file', files[i] as File, `${TODAY}-${uploadPhotoIds[i]}`);
+      cloudflareForm.append('file', files[i] as File, `${uploadPhotoIds[i]}`);
 
       const response = await fetch(uploadUrls[i], {
-        method: 'post',
+        method: 'POST',
         body: cloudflareForm,
       });
 

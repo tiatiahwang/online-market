@@ -30,7 +30,7 @@ export default async function EditProduct({ params }: { params: { id: string } }
 
   return (
     <div>
-      <EditForm product={product} />
+      <EditForm id={id} product={product} />
     </div>
   );
 }
