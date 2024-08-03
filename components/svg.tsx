@@ -16,6 +16,8 @@ import Delete from '@/public/svgs/delete.svg';
 import Like from '@/public/svgs/like.svg';
 import Comment from '@/public/svgs/comment.svg';
 import Eye from '@/public/svgs/eye.svg';
+import ChevRight from '@/public/svgs/chevron-right.svg';
+import ChevLeft from '@/public/svgs/chevron-left.svg';
 
 type SvgProps = {
   width: string;
@@ -94,4 +96,12 @@ export const CommentIcon = ({ width, height, stroke }: SvgProps) => {
 
 export const EyeIcon = ({ width, height, stroke }: SvgProps) => {
   return <Eye width={width} height={height} stroke={stroke} />;
+};
+
+export const ChevRightIcon = ({ width, height, stroke }: SvgProps) => {
+  return <ChevRight width={width} height={height} stroke={stroke} />;
+};
+
+export const ChevLeftIcon = ({ width, height, stroke }: SvgProps) => {
+  return <ChevLeft width={width} height={height} stroke={stroke} />;
 };

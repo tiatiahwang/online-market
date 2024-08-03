@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { unstable_cache as nextCache } from 'next/cache';
 import BottomDrawer from '@/components/products/bottom-drawer';
+import ImageSlider from '@/components/image-slider';
 
 async function CheckIsOwner(userId: number) {
   const session = await getSession();
@@ -88,7 +89,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
   return (
     <div>
       <div className='relative aspect-square'>
-        <Image fill src={`${product.photo[0].url}/public`} alt={product.title} />
+        <ImageSlider photo={product.photo} />
       </div>
       <div className='p-5 flex justify-between items-center gap-3 border-b border-neutral-700'>
         <div className='w-[80%] size-10 flex items-center space-x-2'>
