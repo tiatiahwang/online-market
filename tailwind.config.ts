@@ -30,6 +30,7 @@ const config: Config = {
           1: '#D9D9D9',
           2: '#ACACAC',
           3: '#595959',
+          4: '#404040',
         },
       },
       skeleton: '#404040',

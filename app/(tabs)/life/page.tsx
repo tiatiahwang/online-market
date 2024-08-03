@@ -40,7 +40,7 @@ export default async function Life() {
             <div className='flex gap-2 items-center'>
               <span>{formatTime(post.created_at.toString())}</span>
               <span className='text-[10px]'>|</span>
-              <span>조회 {post.views}</span>
+              <span>views {post.views}</span>
             </div>
             <div className='flex gap-2 items-center *:flex *:gap-1 *:items-center'>
               <span>

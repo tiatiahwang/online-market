@@ -84,8 +84,8 @@ export const DeleteIcon = ({ width, height, stroke }: SvgProps) => {
   return <Delete width={width} height={height} stroke={stroke} />;
 };
 
-export const LikeIcon = ({ width, height, stroke }: SvgProps) => {
-  return <Like width={width} height={height} stroke={stroke} />;
+export const LikeIcon = ({ width, height, stroke, fill }: SvgProps) => {
+  return <Like width={width} height={height} stroke={stroke} fill={fill} />;
 };
 
 export const CommentIcon = ({ width, height, stroke }: SvgProps) => {

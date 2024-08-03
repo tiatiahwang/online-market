@@ -2,9 +2,10 @@ import { EyeIcon, LikeIcon } from '@/components/svg';
 import db from '@/lib/db';
 import getSession from '@/lib/session/getSession';
 import { formatTime } from '@/lib/utils';
-import { revalidatePath } from 'next/cache';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { unstable_cache as nextCache, revalidateTag } from 'next/cache';
+import LikeButton from '@/components/like-button';
 
 async function getPost(id: number) {
   try {
@@ -27,7 +28,6 @@ async function getPost(id: number) {
         _count: {
           select: {
             comments: true,
-            likes: true,
           },
         },
       },
@@ -39,19 +39,42 @@ async function getPost(id: number) {
   }
 }
 
-async function getIsLiked(postId: number) {
-  const session = await getSession();
+const getCachedPost = nextCache(getPost, ['post-detail'], {
+  tags: ['post-detail'],
+  revalidate: 60,
+});
 
-  const like = await db.like.findUnique({
+async function getLikeStatus(postId: number, userId: number) {
+  const isLiked = await db.like.findUnique({
     where: {
       id: {
         postId,
-        userId: session.id!,
+        userId,
       },
     },
   });
 
-  return Boolean(like);
+  const likeCount = await db.like.count({
+    where: {
+      postId,
+    },
+  });
+
+  return {
+    likeCount,
+    isLiked: Boolean(isLiked),
+  };
+}
+
+async function getCachedLikeStatus(postId: number) {
+  const session = await getSession();
+  const userId = session.id;
+
+  const cachedOperation = nextCache(getLikeStatus, ['product-like-status'], {
+    tags: [`like-status-${postId}`],
+  });
+
+  return cachedOperation(postId, userId!);
 }
 
 export default async function PostDetail({ params }: { params: { id: string } }) {
@@ -61,48 +84,13 @@ export default async function PostDetail({ params }: { params: { id: string } })
     return notFound();
   }
 
-  const post = await getPost(id);
+  const post = await getCachedPost(id);
 
   if (!post) {
     return notFound();
   }
 
-  const likePost = async () => {
-    'use server';
-
-    try {
-      const session = await getSession();
-
-      await db.like.create({
-        data: {
-          postId: id,
-          userId: session.id!,
-        },
-      });
-
-      revalidatePath(`/posts/${id}`);
-    } catch (e) {}
-  };
-
-  const dislikePost = async () => {
-    'use server';
-    try {
-      const session = await getSession();
-
-      await db.like.delete({
-        where: {
-          id: {
-            postId: id,
-            userId: session.id!,
-          },
-        },
-      });
-
-      revalidatePath(`/posts/${id}`);
-    } catch (e) {}
-  };
-
-  const isLiked = await getIsLiked(id);
+  const { likeCount, isLiked } = await getCachedLikeStatus(id);
 
   return (
     <div className='p-4 text-light-text dark:text-dark-text'>
@@ -123,21 +111,8 @@ export default async function PostDetail({ params }: { params: { id: string } })
       </div>
       <h2 className='text-lg font-semibold'>{post.title}</h2>
       <p className='mb-4'>{post.description}</p>
-      <div className='flex flex-col items-start gap-4'>
-        <div className='flex items-center gap-2 text-sm'>
-          <EyeIcon width='16' height='16' stroke='#ECECEC' />
-          <span>views {post.views}</span>
-        </div>
-        <form action={isLiked ? dislikePost : likePost} className='flex items-center gap-4 text-sm'>
-          <button
-            className={`flex items-center gap-2 p-2 text-sm rounded-full transition-colors ${
-              isLiked ? 'hover:bg-light-text dark:hover:bg-dark-text' : 'hover:bg-primary-3'
-            }`}
-          >
-            <LikeIcon width='16' height='16' stroke={isLiked ? '#60BC46' : '#ECECEC'} />
-          </button>
-          <span>likes {post._count.likes}</span>
-        </form>
+      <div className='flex items-center gap-2'>
+        <LikeButton isLiked={isLiked} likeCount={likeCount} postId={id} />
       </div>
     </div>
   );
