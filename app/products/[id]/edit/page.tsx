@@ -3,6 +3,9 @@ import { unstable_cache as nextCache } from 'next/cache';
 import { getProductDetail } from './action';
 import getSession from '@/lib/session/getSession';
 import EditForm from '@/components/products/edit-form';
+import { XIcon } from '@/components/svg';
+import Link from 'next/link';
+import Header from '@/components/header';
 
 const getCachedProduct = nextCache(getProductDetail, ['product-detail'], {
   tags: ['product-detail'],
@@ -29,8 +32,9 @@ export default async function EditProduct({ params }: { params: { id: string } }
   }
 
   return (
-    <div>
+    <>
+      <Header title='Edit Product' showXIcon={true} href={`/products/${id}`} />
       <EditForm id={id} product={product} />
-    </div>
+    </>
   );
 }
