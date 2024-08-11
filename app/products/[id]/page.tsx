@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import { unstable_cache as nextCache } from 'next/cache';
 import BottomDrawer from '@/components/products/bottom-drawer';
 import ImageSlider from '@/components/image-slider';
+import Header from '@/components/header';
 
 async function CheckIsOwner(userId: number) {
   const session = await getSession();
@@ -87,8 +88,9 @@ export default async function ProductDetail({ params }: { params: { id: string }
   const isOwner = await CheckIsOwner(product.userId);
 
   return (
-    <div>
-      <div className='relative aspect-square'>
+    <>
+      <Header title={product.title} showPrevIcon={true} href={`/`} />
+      <div className='relative aspect-square pt-[52px]'>
         <ImageSlider photo={product.photo} />
       </div>
       <div className='p-5 flex justify-between items-center gap-3 border-b border-neutral-700'>
@@ -121,6 +123,6 @@ export default async function ProductDetail({ params }: { params: { id: string }
           Chat
         </Link>
       </div>
-    </div>
+    </>
   );
 }
