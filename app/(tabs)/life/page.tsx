@@ -27,12 +27,12 @@ export default async function Life() {
   const posts = await getPosts();
 
   return (
-    <div className='p-5 flex flex-col'>
+    <div className='p-4 flex flex-col'>
       {posts.map((post) => (
         <Link
           key={post.id}
           href={`/posts/${post.id}`}
-          className='pb-5 mb-5 border-b border-neutral-500 text-neutral-400 flex  flex-col gap-2 last:pb-0 last:border-b-0'
+          className='pb-5 mb-5 border-b flex  flex-col gap-2 last:pb-0 last:border-b-0'
         >
           <h2 className='text-white text-lg font-semibold'>{post.title}</h2>
           <p>{post.description}</p>
@@ -44,7 +44,7 @@ export default async function Life() {
             </div>
             <div className='flex gap-2 items-center *:flex *:gap-1 *:items-center'>
               <span>
-                <LikeIcon width='16' height='16' stroke='#ECECEC' />
+                <LikeIcon width='16' height='16' fill='#212529' stroke='#ECECEC' />
                 {post._count.likes}
               </span>
               <span>

@@ -1,3 +1,4 @@
+import FloatingButton from '@/components/floating-button';
 import ProductList from '@/components/products/product-list';
 import { PlusIcon } from '@/components/svg';
 import db from '@/lib/db';
@@ -38,16 +39,7 @@ export default async function Products() {
   return (
     <div className='w-full max-w-sm p-4 flex flex-col gap-4'>
       <ProductList initialProducts={initialProducts} />
-      <div className='flex justify-end pr-4'>
-        <div className='fixed bottom-24'>
-          <Link
-            href='/products/add'
-            className='bg-primary-4 flex items-center justify-center rounded-full size-12 text-light-text dark:text-dark-text transition-colors hover:bg-pink-400'
-          >
-            <PlusIcon width='30' height='30' fill='#ECECEC' />
-          </Link>
-        </div>
-      </div>
+      <FloatingButton href='/products/add' />
     </div>
   );
 }

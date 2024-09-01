@@ -1,6 +1,6 @@
 'use client';
 
-import { InitialProducts } from '@/app/(tabs)/products/page';
+import { InitialProducts } from '@/app/(tabs)/home/page';
 import { useEffect, useRef, useState } from 'react';
 import Product from './product';
 import { getMoreProducts } from '@/app/(tabs)/home/actions';

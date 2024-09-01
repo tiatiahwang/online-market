@@ -93,7 +93,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
       <div className='relative aspect-square pt-[52px]'>
         <ImageSlider photo={product.photo} />
       </div>
-      <div className='p-5 flex justify-between items-center gap-3 border-b border-neutral-700'>
+      <div className='p-4 flex justify-between items-center gap-3 border-b border-neutral-700'>
         <div className='w-[80%] size-10 flex items-center space-x-2'>
           {product.user.avatar !== null ? (
             <Image
@@ -110,7 +110,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
         </div>
         <div>{isOwner ? <BottomDrawer productId={String(product.id)} /> : null}</div>
       </div>
-      <div className='p-5'>
+      <div className='p-4'>
         <h1 className='text-2xl font-semibold'>{product.title}</h1>
         <p>{product.description}</p>
       </div>
