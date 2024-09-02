@@ -18,6 +18,9 @@ import Comment from '@/public/svgs/comment.svg';
 import Eye from '@/public/svgs/eye.svg';
 import ChevRight from '@/public/svgs/chevron-right.svg';
 import ChevLeft from '@/public/svgs/chevron-left.svg';
+import Purchase from '@/public/svgs/purchase.svg';
+import Sell from '@/public/svgs/sell.svg';
+import Logout from '@/public/svgs/log-out.svg';
 
 type SvgProps = {
   width: string;
@@ -104,4 +107,16 @@ export const ChevRightIcon = ({ width, height, stroke }: SvgProps) => {
 
 export const ChevLeftIcon = ({ width, height, stroke }: SvgProps) => {
   return <ChevLeft width={width} height={height} stroke={stroke} />;
+};
+
+export const PurchaseIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Purchase width={width} height={height} stroke={stroke} />;
+};
+
+export const SellIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Sell width={width} height={height} stroke={stroke} />;
+};
+
+export const LogoutIcon = ({ width, height, stroke }: SvgProps) => {
+  return <Logout width={width} height={height} stroke={stroke} />;
 };
